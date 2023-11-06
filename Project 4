@@ -1,0 +1,200 @@
+// Braden Drewery
+// Project 4
+// Fun with Functions
+// CPP File due 3/20
+#include <iostream>
+using namespace std;
+//***************************************************************
+// Constants
+//***************************************************************
+const string line = "----------------------------------";
+//***************************************************************
+// Declarations
+//***************************************************************
+int GetChoice();
+void GetFirstLast(string &first, string &last);
+void DisplayFirstLast(string first, string last);
+void GetDim(int &row, int &col);
+void PrintBox(int row, int col);
+char ConvertDigitToChar(int digit);
+void PrintMultTable(int factor);
+//***************************************************************
+// Driver
+//***************************************************************
+int main() {
+  // Declare variables needed within multiple if clauses below here
+  string first, last;
+  int row, col, factor, choice = GetChoice();
+  while (choice != 0) {
+    if (choice == 1) {
+      GetFirstLast(first, last);
+    } else if (choice == 2) {
+      DisplayFirstLast(first, last);
+    } else if (choice == 3) {
+      GetDim(row, col);
+    } else if (choice == 4) {
+      PrintBox(row, col);
+    } else if (choice == 5) {
+      int digit;
+      cout << "Enter a single digit integer: ";
+      cin >> digit;
+      cout << "The character equivalent of " << digit << " is "
+           << ConvertDigitToChar(digit) << endl;
+    } else if (choice == 6) {
+      cout << "Enter a factor: ";
+      cin >> factor;
+      PrintMultTable(factor);
+    }
+    choice = GetChoice();
+  }
+  return 0;
+}
+//***************************************************************
+// Definitions
+//***************************************************************
+//***************************************************************
+// Function Name: GetChoice - do not change this routine
+//***************************************************************
+// Purpose: To print options to the user for menu options
+// Incoming: NA
+// Outoing: NA
+// Return: Choice as an integer
+//***************************************************************
+int GetChoice() {
+  int result = 0;
+  cout << endl << line << endl;
+  cout << "Enter the choice you want to complete: " << endl;
+  cout << "1: Get First and Last name of user" << endl;
+  cout << "2: Display First and Last name of user" << endl;
+  cout << "3: Get Current Dimensions of row and col" << endl;
+  cout << "4: Print a Box" << endl;
+  cout << "5: Convert a single digit integer to its char" << endl;
+  cout << "6: Print multiplication table" << endl;
+  cout << "0: Stop" << endl;
+  cout << line << endl;
+  cout << "Enter your choice here: ";
+  cin >> result;
+  cout << line << endl << endl;
+  return result;
+}
+//***************************************************************
+// Function Name: GetFirstLast
+//***************************************************************
+// Purpose: To prompt for and input the user's first and last name
+// Incoming: NA
+// Outoing: first name as a string, last name as a string
+// Return: NA
+//***************************************************************
+void GetFirstLast(string &first, string &last) {
+  cout << "Enter your first name: ";
+  cin >> first;
+  cout << "Enter your last name: ";
+  cin >> last;
+}
+//***************************************************************
+// Function Name: DisplayFirstLast
+//***************************************************************
+// Purpose: To Display the first and last names
+// Incoming: first name as a string, last name as a string
+// Outoing: NA
+// Return: NA
+//***************************************************************
+void DisplayFirstLast(string first, string last) {
+  cout << "First Name: " << first << endl;
+  cout << "Last Name: " << last << endl;
+}
+//***************************************************************
+// Function Name: GetDimenions
+//***************************************************************
+// Purpose: To prompt for and input the row and column number
+// Incoming: NA
+// Outoing: row as an integer, column as an integer
+// Return: NA
+//***************************************************************
+void GetDim(int &row, int &col) {
+  cout << "Enter the number of rows: ";
+  cin >> row;
+  cout << "Enter the number of columns: ";
+  cin >> col;
+}
+//***************************************************************
+// Function Name: PrintBox
+//***************************************************************
+// Purpose: To print a box given the row and column dimensions
+// in the shape below where the X's and O's toggle,
+// examples given below:
+//
+// 3x4 4x3
+// XOXO XOX
+// XOXO OXO
+// XOXO XOX
+// OXO
+// Incoming: row as integer, col as integer
+// Outoing: NA
+// Return: NA
+//***************************************************************
+void PrintBox(int row, int col) {
+  for (int r = 0; r < row; r++) {
+    for (int c = 0; c < col; c++) {
+      if ((r + c) % 2 == 0) {
+        cout << "X";
+      } else {
+        cout << "O";
+      }
+    }
+    cout << endl;
+  }
+}
+//***************************************************************
+// Function Name: ConvertDigitToChar
+//***************************************************************
+// Purpose: Take the given integer digit and return the
+// digit in its character form. Should the integer
+// parameter be larger or smaller than a single
+// non-negative digit, the function should return
+// the letter 'Z'. That is the integer must be
+// in the range of [0..9] to be converted to its
+// character equivalent
+// Incoming: digit as an integer
+// Outoing: NA
+// Return: digit as a character
+//***************************************************************
+char ConvertDigitToChar(int digit) {
+  if (digit >= 0 && digit <= 9) {
+    return '0' + digit;
+  } else {
+    return 'Z';
+  }
+}
+//***************************************************************
+// Function Name: PrintMultTable
+//***************************************************************
+// Purpose: Take the given integer factor, print all multiplcation
+// facts [0..12] for each factor from 0 up to the factor
+// given in the parameter. Print a row and column labels
+// such that the intersection of the row and column label
+// is the product of the row and column. See below for an
+// example with a parameter factor of 2
+// 0 1 2 3 4 5 6 7 8 9 10 11 12
+// 0: 0 0 0 0 0 0 0 0 0 0 0 0 0
+// 1: 0 1 2 3 4 5 6 7 8 9 10 11 12
+// 2: 0 2 4 6 8 10 12 14 16 18 20 22 24
+// Incoming: factor as an integer
+// Outoing: NA
+// Return: NA
+//***************************************************************
+void PrintMultTable(int factor) {
+  // Print the header row
+  cout << " ";
+  for (int r = 1; r <= factor; r++) {
+    cout << r << " ";
+  }
+  // Print the table
+  for (int r = 1; r <= factor; r++) {
+    cout << r << " ";
+    for (int c = 1; c <= factor; c++) {
+      cout << r * c << " ";
+    }
+    cout << endl;
+  }
+}

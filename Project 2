@@ -1,0 +1,100 @@
+//Braden Drewery
+//Project 2
+//Tulips are on their way!
+//Design Document due 2/13
+//CPP file due 2/14
+
+#include <iomanip> //this is included to let setw(15) work properly//
+#include <iostream>
+using namespace std;
+
+//declaring all variables
+int main() {
+  string cusName, address, city, state = "";
+  double quantity, pricePerUnit;
+  int zipCode = 0;
+  char mulch, mulchContainer = '0';
+  
+
+  //Inputing Personal Information
+  cout << "What is your First Name and Last Name?: ";
+  getline(cin, cusName);
+
+  cout << "What is your current address?: ";
+  getline(cin, address);
+
+  cout << "What city do you live in?: ";
+  getline(cin, city);
+
+  cout << "What state do you live in?: ";
+  getline(cin, state);
+
+  cout << "What is your zip code?: ";
+  cin >> zipCode;
+  cout << "" << endl;
+  cout << "" << endl;
+  cout << "" << endl;
+
+  //Asking if the customer wants to buy mulch
+  cout << "Do you want to purchase mulch? (y or n): ";
+  cin >> mulch;
+
+  //Deciding how they are buying mulch and how much
+  if (mulch == 'y'){
+    cout << "Do you want to buy mulch by the scoop or bag? (s or b): ";
+    cin >> mulchContainer;
+    if (mulchContainer == 's'){
+      cout << "How many scoops of mulch are you wanting to purchase?: ";
+      cin >> quantity;
+      if (quantity >=1 && quantity <=2){
+        pricePerUnit = 40.00;
+      }
+      else if (quantity >=3 && quantity <=4){
+        pricePerUnit = 30.00;
+      }
+    }
+    else if (mulchContainer == 'b'){
+      cout << "How many bags of mulch are you wanting to purchase?: ";
+      cin >> quantity;
+      if (quantity >=1 && quantity <=5){
+        pricePerUnit = 7.50;
+      }
+      else if (quantity >=6 && quantity <=10){
+        pricePerUnit= 5.00;
+      }
+    }
+    }
+  else if (mulch == 'n'){
+    cout << "Have a nice day!" << endl;
+    return 0;
+  }
+  //Spreading out prompts from Invoice
+  cout << "" << endl;
+  cout << "" << endl;
+
+    
+  //Printing Invoice
+  cout << "Invoice:" << endl;
+  cout << "" << endl;
+  cout << "Tulip Central Garden Center" << endl;
+  cout << "One Harrison Plaza" << endl;
+  cout << "Florence, AL 35632" << endl;
+  cout << "" << endl;
+
+  //Printing Personal Info
+  cout << "Name:" << "\t" << "\t" << cusName << endl;
+  cout << "Address:" << "\t" << address << endl;
+  cout << "City:" << "\t" << "\t"<< city << endl;
+  cout << "State:" << "\t" << "\t" << state << endl;
+  cout << "Zip:" << "\t" << "\t" << zipCode << endl;
+  cout << "" << endl;
+
+  //Printing Purchase Info
+  cout << "Quantity" << "\t" << "Type" << "\t" << "Price Per Unit" << "\t" << " " << "Total Cost" << endl;
+  cout << quantity << setw(18) << mulchContainer << setw(15) << "$" << pricePerUnit << setw(11) << "$" << pricePerUnit * quantity << endl;
+  cout << "" << endl;
+
+  //Ending Code With A Message
+  cout << "Have a nice day!" << endl;
+  return 0;
+}

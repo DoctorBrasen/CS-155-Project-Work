@@ -1,0 +1,190 @@
+// Braden Drewery
+// Project 5
+// Fun with Functions
+// Design Document due 4/24
+// CPP File due 4/25
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
+#include <iostream>
+#include <string>
+using namespace std;
+/*The program loads puzzles from a text file and selects a random one for each
+game. The user
+then tries to guess the letters in the puzzle before running out of guesses. The
+program
+keeps track of wins and losses and displays a win-loss table at the end of the
+game.
+*/
+const int MAX_PUZZLES = 20;
+const int MAX_GUESSES = 7;
+
+// Declare functions
+void displayWelcomeScreen(char guess);
+void loadPuzzles(string puzzles[], bool used[], int &numPuzzles);
+int selectRandomPuzzle(string puzzles[], bool used[], int numPuzzles);
+void displayPuzzle(string puzzle, string guessed);
+int playGame(string &puzzle);
+void displayWinLoseTable(int wins, int losses);
+void displayUsedPuzzles(string puzzles[], bool used[], int numPuzzles);
+void displayUnusedPuzzles(string puzzles[], bool used[], int numPuzzles);
+
+// Declare variables and call functions
+int main() {
+  int wins = 0;
+  int losses = 0;
+  int guess = 0;
+  string puzzle;
+  string puzzles[MAX_PUZZLES];
+  bool used[MAX_PUZZLES] = {false};
+  int numPuzzles = 0;
+  char playAgain = 'y';
+
+  // Display welcome screen and load puzzles
+  displayWelcomeScreen(guess);
+  loadPuzzles(puzzles, used, numPuzzles);
+
+  // Run game until player chooses to quit
+  while (playAgain == 'y' || playAgain == 'Y') {
+    int puzzleIndex = selectRandomPuzzle(puzzles, used, numPuzzles);
+    string puzzle = puzzles[puzzleIndex];
+    string guessed;
+    used[puzzleIndex] = true;
+    displayPuzzle(puzzle, guessed);
+    playGame(puzzle);
+
+    // Update win/loss count and ask if player wants to play again
+    if (int remainingGuesses = 0) {
+      losses++;
+    } else {
+      wins++;
+    }
+    cout << "Wins: " << wins << " Losses: " << losses << endl;
+    cout << "Do you want to play again? (y/n): ";
+    cin >> playAgain;
+  }
+
+  displayWinLoseTable(wins, losses);
+  // Display win-loss table and ask if player wants to view used and unused
+  // puzzles
+  char viewPuzzles;
+  cout << "Do you want to view the used and unused puzzles? (y/n): ";
+  cin >> viewPuzzles;
+  if (viewPuzzles == 'y' || viewPuzzles == 'Y') {
+    displayUsedPuzzles(puzzles, used, numPuzzles);
+    displayUnusedPuzzles(puzzles, used, numPuzzles);
+  }
+  return 0;
+}
+// Function for checking guess and starting game
+void displayWelcomeScreen(char guess) {
+  cin >> guess;
+  int Guess = int(guess);
+  cout << "Welcome to Hangman!" << endl;
+  cout << "Press any key to start the game." << endl;
+  cin >> guess;
+  if ((Guess >= 65 && Guess <= 91) || (Guess >= 97 && Guess <= 122)) {
+    cout << "Begin Hangman" << endl;
+  } else {
+    cout << "Invalid" << endl;
+    exit(1);
+  }
+}
+void loadPuzzles(string puzzles[], bool used[], int &numPuzzles) {
+  ifstream inFile("puzzleoptions.txt");
+  if (!inFile) {
+    cout << "Error: cannot open puzzleoptions.txt" << endl;
+    exit(2);
+  }
+  while (numPuzzles < MAX_PUZZLES && getline(inFile, puzzles[numPuzzles])) {
+    used[numPuzzles] = false;
+    numPuzzles++;
+  }
+  inFile.close();
+}
+int selectRandomPuzzle(string puzzles[], bool used[], int numPuzzles) {
+  int randomIndex = rand() % numPuzzles;
+  while (used[randomIndex]) {
+    randomIndex = rand() % numPuzzles;
+  }
+  return randomIndex;
+}
+void displayPuzzle(string puzzle, string guessed) {
+  cout << "The puzzle is: ";
+  for (int i = 0; i < puzzle.length(); i++) {
+    if (puzzle[i] == ' ') {
+      cout << " ";
+    } else if (guessed.find(puzzle[i]) != string::npos) {
+      cout << puzzle[i] << " ";
+    } else {
+      cout << "_ ";
+    }
+  }
+  cout << endl;
+}
+
+// Function for checking guesses for puzzles and keeps up with remaining guesses
+int playGame(string &puzzle) {
+  string guessedLetters = "";
+  int remainingGuesses = MAX_GUESSES;
+  char guess;
+  while (remainingGuesses > 0) {
+    cout << "Guess a letter (" << remainingGuesses << " guesses remaining): ";
+    cin >> guess;
+    if (guessedLetters.find(guess) != string::npos) {
+      cout << "You already guessed that letter. Try again." << endl;
+      continue;
+    }
+    guessedLetters += guess;
+    if (puzzle.find(guess) != string::npos) {
+      cout << "Correct!" << endl;
+    } else {
+      cout << "Incorrect." << endl;
+      remainingGuesses--;
+    }
+    string revealGuessed = "";
+    for (int i = 0; i < puzzle.length(); i++) {
+      if (puzzle[i] == ' ')
+        revealGuessed += " ";
+      else if (guessedLetters.find(puzzle[i]) != string::npos) {
+        revealGuessed += puzzle[i];
+      } else {
+        revealGuessed += "_";
+      }
+    }
+    cout << revealGuessed << endl;
+    if (puzzle == revealGuessed) {
+      cout << "Congratulations, you solved the puzzle!" << endl;
+      return 1;
+    }
+  }
+  cout << "Sorry, you ran out of guesses. The puzzle was: " << puzzle << endl;
+  return 0;
+}
+// Displays the wins and losses
+void displayWinLoseTable(int wins, int losses) {
+  for (int i = 0; i < MAX_PUZZLES; i++) {
+    cout << "Wins: " << wins << endl;
+    cout << "Losses: " << losses << endl;
+  }
+}
+// Displays the list of used puzzles.
+void displayUsedPuzzles(string puzzles[], bool used[], int numPuzzles) {
+  cout << "Used puzzles: ";
+  for (int i = 0; i < numPuzzles; i++) {
+    if (used[i]) {
+      cout << puzzles[i] << " ";
+    }
+  }
+  cout << endl;
+}
+// Displays the list of unused puzzles
+void displayUnusedPuzzles(string puzzles[], bool used[], int numPuzzles) {
+  cout << "Unused puzzles: ";
+  for (int i = 0; i < numPuzzles; i++) {
+    if (!used[i]) {
+      cout << puzzles[i] << " ";
+    }
+  }
+  cout << endl;
+}

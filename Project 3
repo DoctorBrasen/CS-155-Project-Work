@@ -1,0 +1,78 @@
+// Braden Drewery
+// Project 3
+// Three in One!
+// Design Document due 3/9
+// CPP File due 3/14
+
+#include <fstream>
+#include <iostream>
+#include <string>
+using namespace std;
+
+// constant variable
+const string dashes = "----------------------------------------------------";
+
+// declaring variables
+int main() {
+  double earnings, rate, sales;
+
+  // Read first_file
+  ifstream first;
+  first.open("first.txt");
+  if (first.fail()) {
+    cout << "Error: couldn't open first.txt" << endl;
+  }
+  // Read last_file
+  ifstream last;
+  last.open("last.txt");
+  if (last.fail()) {
+    cout << "Error: couldn't open last.txt" << endl;
+  }
+  // Read salesrate_file
+  ifstream salesrate;
+  salesrate.open("salesrate.txt");
+  if (salesrate.fail()) {
+    cout << "Error: couldn't open salesrate.txt" << endl;
+  }
+
+  int numLines;
+  first >> numLines;
+
+  // Create Output File Name
+  // string output_file = "DreweryBraden_p3.txt";
+
+  // Write results to output file
+  ofstream output("DreweryBraden_p3.txt");
+  cout << "Drewery P3 Output File" << endl;
+  cout << dashes << endl;
+
+  string firstName, lastName;
+  for (int L = 0; L < numLines; L++) {
+    first >> firstName;
+    last >> lastName;
+    string fullName = firstName + lastName;
+
+    salesrate >> sales;
+    salesrate >> rate;
+    earnings = sales * (rate / 100);
+
+    cout << "Acct No: " << L << endl;
+    cout << firstName << " " << lastName << endl;
+    for (int i = 0; i <= fullName.length(); i++) {
+      cout << "-";
+    }
+    cout << endl;
+    // cout << "----------------------" << endl;
+    cout << "Sales: " << sales << endl;
+    cout << "Rate: " << rate << endl;
+    cout << "Earnings:" << earnings << endl;
+    cout << dashes << endl;
+  }
+
+  // Close input files
+  first.close();
+  last.close();
+  salesrate.close();
+
+  return 0;
+}
